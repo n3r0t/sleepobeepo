@@ -86,7 +86,6 @@ ENV/
 .idea/
 .git/
 id.ini
-.day
 
 # Spyder project settings
 .spyderproject
