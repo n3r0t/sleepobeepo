@@ -14,7 +14,8 @@ bot.validate_on_submit = True
 
 pathG11 = "C:/Users/NRTALPHA/Pictures/g11SpiritAnimal"
 files = os.listdir(pathG11)
-fullpath = f'{pathG11}/{files[random.randrange(len(files))]}'
+rdm = random.randrange(len(files))
+fullpath = f'{pathG11}/{files[rdm]}'
 
 f = open(".day", "r")
 content = int(f.read())
@@ -29,4 +30,4 @@ f.close()
 subreddit = bot.subreddit('sleepobeepo')
 subreddit.submit_image(f'Daily G11 #{numberDay}',fullpath)
 
-os.rename(fullpath,f'/posted/{numberDay}')
+os.rename(fullpath,f'{pathG11}/posted/{files[rdm]}')
