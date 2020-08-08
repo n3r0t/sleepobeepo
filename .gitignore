@@ -86,6 +86,7 @@ ENV/
 .idea/
 .git/
 id.ini
+*.png
 
 # Spyder project settings
 .spyderproject
