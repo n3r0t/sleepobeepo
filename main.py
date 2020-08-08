@@ -1,13 +1,11 @@
 import configparser
 import json
-import os
-import random
 from urllib.request import urlopen
 
 import praw
 from saucenao_api import SauceNao
 
-with open("id.ini") as idbot:
+with open("id.ini") as idbot:  # Read the .ini for the API keys and password
     config = configparser.ConfigParser()
     config.read_file(idbot)
 
@@ -17,75 +15,53 @@ bot = praw.Reddit(client_id=config["REDDIT"]["client_id"],
                   username="n3r0T",
                   user_agent="Nothing for today? Then, I'll go sleep right now...")
 
-bot.validate_on_submit = True
 sleepobeepo = bot.subreddit('sleepobeepo')
 
-footer = ""
+footer = "\n\n\n\n ^this ^message ^was ^sent ^[automatically](https://github.com/n3r0t/sleepobeepo)"
 
 
-def isPicture(file):
-    from PIL import Image
-    try:
-        Image.open(file)
-        return True
-    except IOError:
-        return False
-
-
-pathG11 = "C:/Users/NRTALPHA/Pictures/g11SpiritAnimal"
-files = os.listdir(pathG11)
-rdm = random.randrange(len(files))
-fullpath = f'{pathG11}/{files[rdm]}'
-while not isPicture(fullpath):
-    print("check extension")
-    rdm = random.randrange(len(files))
-    fullpath = f'{pathG11}/{files[rdm]}'
-
-
-def incrementDay():
-    f = open(".day", "r")
-    content = int(f.read())
-    content += 1
-    numberDay = str(content)
-    f.close()
-    f = open(".day", "w")
-    f.write(numberDay)
-    f.close()
-    return numberDay
-
-
-# subreddit.submit_image(f'Daily G11 #{numberDay}',fullpath)
-# os.rename(fullpath,f'{pathG11}/posted/{files[rdm]}')
 def imgSearch(imgURL, postID):
+    """use SauceNao to get the source of the picture and
+    post a reply to the Reddit thread wit the source"""
     imgSource = SauceNao(api_key=config["SNAO"]["apikey"]).from_url(imgURL)
-    comment = bot.submission(postID)  # Reply to post with the source
+    comment = bot.submission(postID)
     if imgSource[0].similarity >= 87.00:
-        comment.reply(f"Source: {imgSource[0].url}")
+        comment.reply(f"Source: {imgSource[0].url}" + footer)
         print(f"{imgSource[0].url} -- {imgSource[0].similarity}%")
     else:
-        comment.reply(f"No good source found.")
+        comment.reply(f"No good source found." + footer)
 
 
-def idkMan():
+def checkNewSubmission():
+    """Check new submissions then check if I already posted,
+    if I haven't, it search for the source of the picture posted"""
+
+    # Check for new submissions
     lastSubmissionsURL = urlopen(
         "https://api.pushshift.io/reddit/search/submission/?subreddit=sleepobeepo&sort=desc&size=25")
     lastSubmissionsData = json.loads(lastSubmissionsURL.read())
-    # print(lastSubmissionsData)
+
+    # check for the comments
     linkID = f"t3_{lastSubmissionsData['data'][0]['id']}"
     linkIDURL = urlopen(f"https://api.pushshift.io/reddit/search/comment/?subreddit=sleepobeepo&link_id={linkID}")
     linkIDData = json.loads(linkIDURL.read())
-    print(lastSubmissionsData['data'][0]['title'])
+
+    print(f"{lastSubmissionsData['data'][0]['title']} -- {lastSubmissionsData['data'][0]['permalink']}")
+
     if linkIDData['data']:
-        temp = 0
+        numberOfN3r0tComment = 0
         for comment in linkIDData['data']:
-            if comment['author'] != 'n3r0T':
-                temp += 1
-        if temp > 0:
-            print("No post by n3r0T, posting the source")
+            if comment['author'] == 'n3r0T':
+                numberOfN3r0tComment += 1  # It check if I already posted in the thread
+        if numberOfN3r0tComment == 0:
+            print("No post by n3r0T, posting the source.")
             imgSearch(lastSubmissionsData["data"][0]["url_overridden_by_dest"], lastSubmissionsData['data'][0]['id'])
+        else:
+            print("n3r0T already posted.")
     else:
-        print("No comment, posting the source")
+        print("No comment, posting the source.")
         imgSearch(lastSubmissionsData["data"][0]["url_overridden_by_dest"], lastSubmissionsData['data'][0]['id'])
+    print("Done.")
 
 
-idkMan()
+checkNewSubmission()
