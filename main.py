@@ -28,7 +28,7 @@ def imgSearch(imgURL, postID):
     comment = bot.submission(postID)
     if imgSource[0].similarity >= 87.00:
         comment.reply(f"Source: {imgSource[0].url} {footer}")
-        print(f"{imgSource[0].url} -- {imgSource[0].similarity}%")
+        print(f"Source: {imgSource[0].url} - {imgSource[0].similarity}%")
     else:
         comment.reply(f"No good source found." + footer)
 
@@ -38,9 +38,9 @@ def checkNewSubmission():
     if I haven't, it search for the source of the picture posted"""
     startTime = time.time()
     for submission in sleepobeepo.new(limit=3):
-        sub = bot.submission(id=submission.id)
-        print(f"{submission.title} -- {submission.permalink}")
+        print(f"Checking {submission.title} -- {submission.permalink}")
         if submission.is_robot_indexable:
+            sub = bot.submission(id=submission.id)
             if sub.comments.list():
                 numberOfN3r0tComment = 0
                 for comment in sub.comments:
@@ -50,12 +50,12 @@ def checkNewSubmission():
                     print("No post by n3r0T, posting the source.")
                     imgSearch(sub.url,submission.id)
                 else:
-                    print("n3r0T already posted.\n")
+                    print("n3r0T already posted.")
             else:
                 print("No comment, posting the source.")
                 imgSearch(sub.url,submission.id)
         else:
-            print("Post deleted. Not posting.\n")
+            print("Post deleted. Not posting.")
 
     print(f"Done at {time.strftime('%H:%M:%S', time.localtime())} in {round(time.time() - startTime,2)} sec.\n\n")
 
