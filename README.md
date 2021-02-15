@@ -8,8 +8,10 @@ ___
 You are free to use it for any subreddit that need to search the source of the picture posted.
 
 - Clone repo
+- Get API key on [reddit](https://www.reddit.com/prefs/apps) and [sauce-nao](https://saucenao.com/user.php?page=search-api)
 - Install requirements with `pip requirements.txt`
-- Edit line 43 of `main.py` with the name ot your subreddit
+- Fill `id.ini` with required info
+- Edit line 43 of `main.py` with the name of your subreddit
 - Run `python bot/main.py`
 ___
 TODO (maybe):
