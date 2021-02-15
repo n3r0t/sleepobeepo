@@ -22,22 +22,26 @@ footer = "\n\n\n\n ^this ^message ^was ^sent ^[automatically](https://github.com
 
 
 def imgSearch(imgURL, postID):
-    """use SauceNao to get the source of the picture and
-    post a reply to the Reddit thread wit the source"""
+    """
+    Use SauceNao to get the source of the picture
+    and reply in the Reddit thread with the source.
+    """
     imgSource = saucenao.from_url(imgURL)
     comment = bot.submission(postID)
     if imgSource[0].similarity >= 87.00:
         comment.reply(f"Source: {imgSource[0].url} {footer}")
-        print(f"Source: {imgSource[0].url} - {imgSource[0].similarity}%")
+        print(f"Source: {imgSource[0].urls[0]} - {imgSource[0].similarity}%")
     else:
         comment.reply(f"No good source found." + footer)
 
 
 def checkNewSubmission():
-    """Check new submissions then check if I already posted,
-    if I haven't, it search for the source of the picture posted"""
+    """
+    Check new submissions then check if source was already posted,
+    if it haven't, it search for the source of the picture posted
+    """
     startTime = time.time()
-    for submission in sleepobeepo.new(limit=3):
+    for submission in bot.subreddit("sleepobeepo").stream.submissions():
         print(f"Checking {submission.title} -- {submission.permalink}")
         if submission.is_robot_indexable:
             sub = bot.submission(id=submission.id)
