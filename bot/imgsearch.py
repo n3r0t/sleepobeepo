@@ -1,6 +1,6 @@
-import api
 from saucenao_api.errors import *
 
+import api
 from errors import *
 
 saucenao = api.saucenao()
@@ -27,4 +27,3 @@ def imgSearch(imgURL: str) -> str:
 
     except UnknownServerError as e:
         print(e)
-

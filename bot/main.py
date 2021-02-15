@@ -1,13 +1,12 @@
 import api
-from imgsearch import imgSearch
 from errors import *
+from imgsearch import imgSearch
 
 bot = api.reddit()
 
-
 footer = "\n\n\n\n ^this ^message ^was ^sent ^[automatically](https://github.com/n3r0t/sleepobeepo)"
 
-source_list = ["twitter","pixiv"]
+source_list = ["twitter", "pixiv"]
 
 
 def streamSubmissions(subreddit: str) -> None:
