@@ -11,7 +11,7 @@ You are free to use it for any subreddit that need to search the source of the p
 - Get API key on [reddit](https://www.reddit.com/prefs/apps)
   and [sauce-nao](https://saucenao.com/user.php?page=search-api)
 - Install requirements with `pip requirements.txt`
-- Fill `id.ini` with required infos.
+- Fill `id.ini` with required infos. Check the [wiki](https://github.com/n3r0t/sleepobeepo/wiki/How-to-fill-id.ini) for more infos.
 - Run `python bot/main.py <name of subreddit>`
 ___
 TODO:
