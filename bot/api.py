@@ -16,7 +16,9 @@ def reddit():
     return Reddit(client_id=config["REDDIT"]["client_id"],
                   client_secret=config["REDDIT"]["client_secret"],
                   password=config["REDDIT"]["password"],
-                  username=config["REDDIT"]["username"])
+                  username=config["REDDIT"]["username"],
+                  user_agent="Nothing for today? Then, I'll go sleep right now...")
+
 
 
 def saucenao():

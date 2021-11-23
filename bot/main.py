@@ -14,7 +14,14 @@ def getSubreddit():
                            type=str,
                            help='link to subreddit')
 
-    return subParser.parse_args().Subreddit
+    arg = subParser.parse_args().Subreddit
+    try:
+        bot.subreddits.search_by_name(arg, exact=True)
+    except:
+        logger.warning("Wrong subreddit specified, exiting script now.")
+        exit()
+    else:
+        return arg
 
 
 def streamSubmissions(subreddit: str) -> None:
@@ -24,7 +31,6 @@ def streamSubmissions(subreddit: str) -> None:
     :param subreddit: String of the wanted subreddit (given automatically with getSubreddit()
     :return: Nothing. Will continuously stream submissions till script is stoped by an external source.
     """
-    bot = api.reddit()
     sleepobeepo = bot.subreddit(subreddit)
     source_list = ["twitter", "pixiv"]
     footer = "\n\n\n\n ^this ^message ^was ^sent ^[automatically](https://github.com/n3r0t/sleepobeepo)"
@@ -56,4 +62,5 @@ def streamSubmissions(subreddit: str) -> None:
 
 if __name__ == "__main__":
     logger = logs.setup("main")
+    bot = api.reddit()
     streamSubmissions(getSubreddit())
