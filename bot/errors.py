@@ -1,5 +1,5 @@
 """
-Custom errors classes created for the need ot the project
+Custom errors classes created for the needs of the project
 """
 
 
