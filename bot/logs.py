@@ -1,21 +1,27 @@
 import logging
 
+loggers = {}
 
 def setup(module):
-    logger = logging.getLogger(module)
-    logger.setLevel(logging.DEBUG)
+    global loggers
+    if loggers.get(module):
+        return loggers.get(module)
 
-    formatter = logging.Formatter('%(levelname)s | %(asctime)s | %(name)s | %(message)s')
+    else:
+        logger = logging.getLogger(module)
+        logger.setLevel(logging.DEBUG)
 
-    file_handler = logging.FileHandler('bot.log')
-    file_handler.setLevel(logging.WARNING)
-    file_handler.setFormatter(formatter)
+        formatter = logging.Formatter('%(levelname)s | %(asctime)s | %(name)s | %(message)s')
 
-    stream_handler = logging.StreamHandler()
-    stream_handler.setLevel(logging.INFO)
-    stream_handler.setFormatter(formatter)
+        file_handler = logging.FileHandler('bot.log')
+        file_handler.setLevel(logging.WARNING)
+        file_handler.setFormatter(formatter)
 
-    logger.addHandler(file_handler)
-    logger.addHandler(stream_handler)
+        stream_handler = logging.StreamHandler()
+        stream_handler.setLevel(logging.INFO)
+        stream_handler.setFormatter(formatter)
 
-    return logger
+        logger.addHandler(file_handler)
+        logger.addHandler(stream_handler)
+
+        return logger

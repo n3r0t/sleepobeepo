@@ -62,6 +62,6 @@ def streamSubmissions(subreddit: str) -> None:
 
 
 if __name__ == "__main__":
-    logger = logs.setup("main")
+    logger = logs.setup(__name__)
     bot = api.reddit()
     streamSubmissions(getSubreddit())
